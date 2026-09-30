@@ -4,17 +4,12 @@ using System.Linq;
 
 // Demo 14 — Issue to Pull Request (the full Copilot workflow)
 // ===========================================================
-// This file contains an INTENTIONAL bug. It is the starting point for an
+// This file was the starting point for an
 // end-to-end demo: file a GitHub Issue → let Copilot fix it → open a Pull
 // Request → review → merge.
 //
-// The bug:
-//   ApplyDiscount() treats a PERCENTAGE discount as a flat amount. A "10%"
-//   coupon subtracts 10 currency units instead of 10% of the subtotal.
-//   See ISSUE.md in this folder for the bug report to copy into GitHub.
-//
 // Demo flow (see the language README for the full script):
-//   1. Run the program → observe the wrong total
+//   1. Run the program → verify the corrected total
 //   2. Create a GitHub Issue from ISSUE.md
 //   3. Assign it to the Copilot coding agent (or use Chat → "Fix issue #N")
 //   4. Review the generated branch + Pull Request
@@ -61,9 +56,10 @@ public class ShoppingCart
         if (_coupon is null)
             return subtotal;
 
-        // BUG: a percentage coupon subtracts the raw Value (e.g. 10) instead of
-        // computing Value percent OF the subtotal (subtotal * Value / 100).
-        decimal discounted = subtotal - _coupon.Value;
+        decimal discount = _coupon.IsPercentage
+            ? subtotal * _coupon.Value / 100m
+            : _coupon.Value;
+        decimal discounted = subtotal - discount;
 
         return discounted < 0 ? 0 : discounted;
     }
@@ -89,6 +85,6 @@ public static class Program
         Console.WriteLine($"Total:    {total:C}");
         Console.WriteLine();
         Console.WriteLine($"Expected total with 10% off: {subtotal * 0.90m:C}");
-        Console.WriteLine($"Actual total (buggy):        {total:C}");
+        Console.WriteLine($"Actual total:                {total:C}");
     }
 }

@@ -778,12 +778,13 @@ previous feature together.
 
 **Files:**
 
-- `ShoppingCart.cs` — a shopping cart with an intentional discount bug
+- `ShoppingCart.cs` — the shopping cart from the discount bug exercise (now fixed)
 - `ISSUE.md` — a ready-to-paste bug report to open as a GitHub Issue
+- `tests/ShoppingCart.Tests.csproj` — regression tests for both coupon types and the zero floor
 
-**The bug:** `ApplyDiscount()` treats a percentage coupon as a flat amount — a 10%
-coupon subtracts €10 instead of 10% of the subtotal, so a €150 cart totals **€140**
-instead of the correct **€135**.
+**The original bug:** `ApplyDiscount()` treated a percentage coupon as a flat amount —
+a 10% coupon subtracted €10 instead of 10% of the subtotal, so a €150 cart totaled
+**€140** instead of the correct **€135**. The current implementation returns **€135**.
 
 **Prerequisites:**
 
@@ -793,15 +794,14 @@ instead of the correct **€135**.
 
 **How to demo:**
 
-1. **Reproduce the bug** — run the program and read the output:
+1. **Verify the fix** — run the program and read the output:
 
    ```bash
-   cd 14-issue-to-pr
-   dotnet run
+   dotnet run --project 14-issue-to-pr/tests/ShoppingCart.Tests.csproj
 
    ```
 
-   Point out `Actual total (buggy): €140.00` vs `Expected: €135.00`.
+   Point out that `Actual total: €135.00` matches the expected total.
 
 2. **Create the Issue** — either paste `ISSUE.md` into a new issue in the GitHub UI,
 
@@ -826,7 +826,7 @@ instead of the correct **€135**.
 4. **Review the Pull Request** — open the PR, read the diff, and run the tests:
 
    ```bash
-   dotnet test
+   dotnet test 14-issue-to-pr/tests/ShoppingCart.Tests.csproj
 
    ```
 
