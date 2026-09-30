@@ -9,7 +9,7 @@ using System.Linq;
 // Request → review → merge.
 //
 // Demo flow (see the language README for the full script):
-//   1. Run the program → observe the wrong total
+//   1. Run the program → verify the corrected total
 //   2. Create a GitHub Issue from ISSUE.md
 //   3. Assign it to the Copilot coding agent (or use Chat → "Fix issue #N")
 //   4. Review the generated branch + Pull Request
